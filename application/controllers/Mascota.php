@@ -36,7 +36,7 @@ class Mascota extends CI_Controller {
 
 	}
 
-	public function m3_s2() { // Listaddo de Usuarios
+	public function m3_s2() { // Listado de Mascotas
 
 		$data['con_seccion']		= $this->secciones_m->con_secciones(false, false, "m3_s2");
 		$data['con_menu']				= $this->secciones_m->con_menu($this->session->userdata("eCodPerfil"));

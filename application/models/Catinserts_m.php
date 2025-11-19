@@ -66,6 +66,41 @@ class Catinserts_m extends CI_Model {
 
     }
 
+    public function ins_producto($aDatos){
+        $data = array(
+            'tNombre'         => $aDatos['tNombre'],
+            'tDescripcion'           => $aDatos['tDescripcion'],
+            'eCodCategoriaProductos'           => $aDatos['eCodCategoriaProductos'],
+            'eCodProveedor'     => $aDatos['eCodProveedor'],
+            'eCodMarca'    => $aDatos['eCodMarca'],
+            'tUnidad'           => $aDatos['tUnidad'],
+            'nPrecioCompra'     => $aDatos['nPrecioCompra'],
+            'nStockMinimo'        => $aDatos['nStockMinimo'],
+            'tCodEstatus'     => $aDatos['tCodEstatus'],
+            'fRegistro'     => $aDatos['fRegistro']
+        );
+
+        /*echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+        die();*/
+
+        $this->db->insert('cat_productos', $data); 
+
+        $aRes['eExito']      = ($this->db->affected_rows() != 1) ? false : true;
+        $aRes['eCodProducto'] = $this->db->insert_id();
+
+        if ($aRes['eExito']) {
+            $aDataLog['eCodEvento']    = 1;
+            $aDataLog['tEvento']       = 'El producto: '.$aDatos['tNombre']. ' fue registrado con éxito';
+            
+            $this->catinserts_m->ins_log_catalogos($aDataLog);
+        }
+
+        return $aRes;
+
+    }
+
     public function upd_usuario($aDatos){
         //campos de la tabla
         $data = array(

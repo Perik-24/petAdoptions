@@ -146,42 +146,6 @@ class Catalogos_m extends CI_Model {
         }
     }
 
-    public function con_municipios ($tCodEstatus = false){
-        $tQuery =   " SELECT * ".
-                    " FROM vmunicipios";
-        $tQuery .=  ($tCodEstatus != false  ?   " WHERE tCodEstatus = '".$tCodEstatus."'" : "");
-        $tQuery .=  " ORDER BY eCodMunicipio ASC ";
-
-        $query = $this->db->query($tQuery);
-        if ($query->num_rows() > 0 ) {
-            return $query->result();
-        }
-    }
-
-    public function con_estados ($tCodEstatus = false){
-        $tQuery =   " SELECT * ".
-                    " FROM vestados";
-        $tQuery .=  ($tCodEstatus != false  ?   " WHERE tCodEstatus = '".$tCodEstatus."'" : "");
-        $tQuery .=  " ORDER BY eCodEstado ASC ";
-
-        $query = $this->db->query($tQuery);
-        if ($query->num_rows() > 0 ) {
-            return $query->result();
-        }
-    }
-
-    public function con_paises ($tCodEstatus = false){
-        $tQuery =   " SELECT * ".
-                    " FROM vpaises";
-        $tQuery .=  ($tCodEstatus != false  ?   " WHERE tCodEstatus = '".$tCodEstatus."'" : "");
-        $tQuery .=  " ORDER BY eCodPais ASC ";
-
-        $query = $this->db->query($tQuery);
-        if ($query->num_rows() > 0 ) {
-            return $query->result();
-        }
-    }
-
     public function con_razas ($tCodEstatus = false){
         $tQuery =   " SELECT * ".
                     " FROM vrazas";
@@ -212,6 +176,55 @@ class Catalogos_m extends CI_Model {
         ($tCodEstatus != false ? " WHERE tCodEstatus IN ('".$tCodEstatus."')" : " WHERE tCodEstatus IN ('AC')").
         ($eCodMascota != false ? " AND eCodMascota = ".$eCodMascota  : "");
         $tQuery .=  " ORDER BY eCodMascota ASC ";
+
+        /*echo "<pre>";
+        echo "La query: ".$tQuery;
+        echo "</pre>";*/
+
+        $query = $this->db->query($tQuery);
+        if ($query->num_rows() > 0 ) {
+            return $query->result();
+        }
+    }
+
+    public function con_categoriasproductos() {
+        $tQuery =   " SELECT * ".
+                    " FROM cat_categoriasproductos";
+
+            $query = $this->db->query( $tQuery);
+            if ($query->num_rows()>0) {
+                return $query->result();
+            }
+        }
+
+    public function con_marcas($tCodEstatus = false) {
+        $tQuery =   " SELECT * ".
+                    " FROM cat_marcas";
+        $tQuery .=  ($tCodEstatus != false  ?   " WHERE tCodEstatus = '".$tCodEstatus."'" : "");
+        $tQuery .=  " ORDER BY eCodMarca ASC ";
+            $query = $this->db->query( $tQuery);
+            if ($query->num_rows()>0) {
+                return $query->result();
+            }
+        }
+
+    public function con_proveedores($tCodEstatus = false) {
+        $tQuery =   " SELECT * ".
+                    " FROM cat_proveedores";
+        $tQuery .=  ($tCodEstatus != false  ?   " WHERE tCodEstatus = '".$tCodEstatus."'" : "");
+        $tQuery .=  " ORDER BY eCodProveedor ASC ";
+
+            $query = $this->db->query( $tQuery);
+            if ($query->num_rows()>0) {
+                return $query->result();
+            }
+        }
+    public function con_productos ($tCodEstatus = false, $eCodProducto = false){
+        $tQuery =   " SELECT * ".
+                    " FROM vProductos".
+        ($tCodEstatus != false ? " WHERE tCodEstatus IN ('".$tCodEstatus."')" : " WHERE tCodEstatus IN ('AC')").
+        ($eCodProducto != false ? " AND eCodProducto = ".$eCodProducto  : "");
+        $tQuery .=  " ORDER BY eCodProducto ASC ";
 
         /*echo "<pre>";
         echo "La query: ".$tQuery;

@@ -235,5 +235,32 @@ class Catalogos_m extends CI_Model {
             return $query->result();
         }
     }
+
+    public function con_movimientos ($tCodEstatus = false, $eCodMovimiento = false){
+        $tQuery =   " SELECT * ".
+                    " FROM vmovimientos".
+        ($tCodEstatus != false ? " WHERE tCodEstatus IN ('".$tCodEstatus."')" : " WHERE tCodEstatus IN ('AC')").
+        ($eCodMovimiento != false ? " AND eCodMovimiento = ".$eCodMovimiento  : "");
+        $tQuery .=  " ORDER BY eCodMovimiento ASC ";
+
+        /*echo "<pre>";
+        echo "La query: ".$tQuery;
+        echo "</pre>";*/
+
+        $query = $this->db->query($tQuery);
+        if ($query->num_rows() > 0 ) {
+            return $query->result();
+        }
+    }
+
+    public function con_motivos_movimiento() {
+        $tQuery =   " SELECT * ".
+                    " FROM cat_motivos_movimiento ";
+        $tQuery .=  " ORDER BY eCodMotivo ASC ";
+            $query = $this->db->query( $tQuery);
+            if ($query->num_rows()>0) {
+                return $query->result();
+            }
+        }
 }
 ?>

@@ -12,20 +12,35 @@
 						margin-bottom: 10px;
 						color: #555;
 					}
- 				.btn-lg {
- 						padding: 10px 16px;
+ 					.btn-lg {
+ 							padding: 10px 16px;
+ 							font-size: 18px;
+ 							line-height: 1.3333333;
+ 							border-radius: 6px;
+ 						}
+					.btn-default {
+ 						color: #000;
+ 						background-color: #ED2100;
+ 						border-color: #ddd;
+ 						}
+						
+ 					.panel-heading {
+ 						color: #000;
+ 						background-color: #5CE65C;
+						font-weight: bold;
+ 						}
+ 					.control-label {
  						font-size: 18px;
- 						line-height: 1.3333333;
- 						border-radius: 6px;
- 					}
- 				.panel-heading {
- 					color: #000;
- 					background-color: #5CE65C;
-					font-weight: bold;
- 					}
- 				.control-label {
- 					font-size: 18px;
-					font-weight: bold;
+						font-weight: bold;
+						}
+					.form-control {
+						font-size: 16px;
+						height: 35px;
+						padding: 6px 12px;
+						border: 1px solid #ccc;
+						border-radius: 4px;
+						box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+						transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 					}
 					
 				</style>
@@ -57,48 +72,57 @@
 							<div class="row">
 								<div class="col-sm-11">
 									<div class="row">
-										<div class="col-sm-12">
-											<div class="form-group">
-												<label class="control-label" style="padding: 3px;">Nombre del producto</label>
-												<input type="text" id="tNombre" name="tNombre" class="form-control" onkeyup="javascript:$('#txtNombre').html($(this).val());">
-											</div>
-										</div>
-									</div>
-									<div class="row">
 										<div class="col-sm-6">
 											<div class="form-group">
-												<label class="control-label" style="padding: 3px;">Categoria</label>
-												<select id="eCodCategoriaProductos" name="eCodCategoriaProductos" data-plugin-selectTwo class="form-control populate">
-													<? 	foreach ($con_categoriasproductos as $ce) { ?>
-														<option value="<?= $ce->eCodCategoriaProductos?>"><?= $ce->tNombre;?></option>	
+												<label class="control-label" style="padding: 3px;">Información del producto</label>
+												<select id="eCodProducto" name="eCodProducto" data-plugin-selectTwo class="form-control populate">
+													<? 	foreach ($con_productos as $ce) { ?>
+														<option value="<?= $ce->eCodProducto?>"><?= $ce->tProductos;?></option>	
 													<? 	} ?>
 												</select>
 											</div>
 										</div>
 										<div class="col-sm-6">
 											<div class="form-group">
-												<label class="control-label" style="padding: 3px;">Marca</label>
-												<select id="eCodMarca" name="eCodMarca" data-plugin-selectTwo class="form-control populate">
-													<? 	foreach ($con_marcas as $cr) { ?>
-														<option value="<?= $cr->eCodMarca?>"><?= $cr->tNombre;?></option>	
-													<? 	} ?>
+												<label class="control-label" style="padding: 3px;">Tipo de Movimiento</label>
+												<select id="tTipoMovimiento" name="tTipoMovimiento" data-plugin-selectTwo class="form-control populate">
+													<option value="ENTRADA">ENTRADA</option>
+													<option value="SALIDA">SALIDA</option>
 												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-6">	
+											<div class="form-group">
+												<label class="control-label" style="padding: 3px;">Cantidad</label>
+												<input type="number" id="nCantidad" name="nCantidad" class="form-control">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label" style="padding: 3px;">Origen de Destino</label>
+												<input type="text" id="tOrigenDestino" name="tOrigenDestino" class="form-control">
 											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-sm-6">
 											<div class="form-group">
-												<label class="control-label" style="padding: 3px;">Descripción</label>
-												<input type="text" id="tDescripcion" name="tDescripcion" class="form-control">
+												<label class="control-label" style="padding: 3px;">Motivo</label>
+												<select id="eCodMotivo" name="eCodMotivo" data-plugin-selectTwo class="form-control populate">
+													<? 	foreach ($con_motivos_movimiento as $cm) { ?>
+														<option value="<?= $cm->eCodMotivo?>"><?= $cm->tMotivo;?></option>	
+													<? 	} ?>
+												</select>
 											</div>
 										</div>
-										<div class="col-sm-6">
+										<div class="col-sm-3">
 											<div class="form-group">
-												<label class="control-label" style="padding: 3px;">Proveedor</label>
-												<select id="eCodProveedor" name="eCodProveedor" data-plugin-selectTwo class="form-control populate">
-													<? 	foreach ($con_proveedores as $cp) { ?>
-														<option value="<?= $cp->eCodProveedor?>"><?= $cp->tNombre;?></option>	
+												<label class="control-label" style="padding: 3px;">Usuario</label>
+												<select id="eCodUsuario" name="eCodUsuario" data-plugin-selectTwo class="form-control populate">
+													<? 	foreach ($con_usuarios as $cu) { ?>
+														<option value="<?= $cu->eCodUsuario?>"><?= $cu->tUsuario;?></option>	
 													<? 	} ?>
 												</select>
 											</div>
@@ -107,37 +131,12 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-3">
+								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="control-label" style="padding: 3px;">Stock</label>
-										<input type="txt" name="nStockMinimo" id="nStockMinimo" class="form-control">
+										<label class="control-label" style="padding: 3px;">Observaciones</label>
+										<textarea name="tObservaciones" id="tObservaciones" class="form-control" rows="4"></textarea>
 									</div>
 								</div>
-								<div class="col-sm-3">
-											<div class="form-group">
-												<label class="control-label" style="padding: 3px;">Unidades</label>
-												<input type="text" 
-															id="tUnidad" 
-															name="tUnidad" 
-															class="form-control"
-															inputmode="numeric" 
-															step="1" 
-															min="0">
-											</div>
-										</div>
-										<div class="col-sm-3">
-											<div class="form-group">
-												<label class="control-label" style="padding: 3px;">Precio de Compra</label>
-												<input type="number" 
-															id="nPrecioCompra" 
-															name="nPrecioCompra" 
-															class="form-control"
-															inputmode="decimal" 
-															step="0.01" 
-															min="0" 
-															placeholder="Ej. 2.50">
-											</div>
-										</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										&nbsp;
@@ -148,9 +147,10 @@
 							<div class="row">
 								<div class="col-md-8">
 									<div id="divRespuestaGuardar" style="display: none;"></div>
-								</div>
-								<div class="col-md-4" align="right">
+								<!-- page </div>
+								<div class="col-md-4">-->
 									<button type='button' class='btn btn-lg btn-success' onclick='guardar(this);'><i class='fa fa-save'></i> Guardar</button>
+									<button type='button' class='btn btn-lg btn-default' onclick='cancelar(this);'><i class='fa fa-times'></i> Cancelar</button>
 								</div>
 							</div>
 						</div>
@@ -211,12 +211,15 @@
 				$("input:text:visible:first").focus();
 			});
 
+			function cancelar(oObjeto){
+				$(oObjeto).prop('disabled', true);
+				window.location.href = "<?= site_url('Inventario/m8_s1'); ?>";
+			}
+
 			function guardar(oObjeto){
 				var eError = 0;
 				var mensaje = "<div class=\"col-md-12 alert alert-danger\">";
-				var unidadesVal = $("#tUnidad").val().trim();
 				var regexEntero = /^\d+$/;
-				var precioVal = $("#nPrecioCompra").val().trim();
 				var regexDecimal = /^\d{1,3}([.,]\d{1,2})?$/;
 
 				/*var mensajeDebug = "--- DATOS A ENVIAR --- \n" + // \n crea un salto de línea
@@ -230,44 +233,34 @@
 
 				alert(mensajeDebug);*/
 				
-				if ($("#eCodMarca").val()==''){
-					mensaje += "<span><i class=\"fa fa-times\"></i> Seleccione la marca</span><br>";
+				if ($("#eCodProducto").val()==''){
+					mensaje += "<span><i class=\"fa fa-times\"></i> Seleccione el producto</span><br>";
 					eError++;
 				}
-				if ($("#eCodCategoriaProductos").val()==''){
-					mensaje += "<span><i class=\"fa fa-times\"></i> Seleccione la categoría de producto</span><br>";
+				if ($("#tTipoMovimiento").val()==''){
+					mensaje += "<span><i class=\"fa fa-times\"></i> Seleccione el tipo de movimiento</span><br>";
 					eError++;
 				}
-				if ($("#eCodProveedor").val()==''){
-					mensaje += "<span><i class=\"fa fa-times\"></i> Seleccione el proveedor</span><br>";
+				if ($("#eCodMotivo").val()==''){
+					mensaje += "<span><i class=\"fa fa-times\"></i> Motivo del movimiento</span><br>";
 					eError++;
 				}
-				if ($("#tNombre").val()==''){
-					mensaje += "<span><i class=\"fa fa-times\"></i> Nombre completo de la mascota</span><br>";
+				if ($("#tOrigenDestino").val()==''){
+					mensaje += "<span><i class=\"fa fa-times\"></i> Poner descripción del origen o destino</span><br>";
 					eError++;
 				}
-				if ($("#tDescripcion").val()==''){
-					mensaje += "<span><i class=\"fa fa-times\"></i> Poner Descripción del producto</span><br>";
+				if ($("#eCodUsuario").val()==''){
+					mensaje += "<span><i class=\"fa fa-times\"></i> Seleccione el usuario</span><br>";
 					eError++;
 				}
-
-				if (unidadesVal == '') { 
-					mensaje += "<span><i class=\"fa fa-times\"></i> Unidades no puede ir vacía</span><br>";
+				if ($("#nCantidad").val()=='') { 
+					mensaje += "<span><i class=\"fa fa-times\"></i> La cantidad no puede ir vacío</span><br>";
 					eError++;
-				}
-
-				if ($("#nStockMinimo").val()=='') { 
-					mensaje += "<span><i class=\"fa fa-times\"></i> El Stock Mínimo no puede ir vacío</span><br>";
-					eError++;
-				} else if (!regexEntero.test($("#nStockMinimo").val().trim())) { 
-					mensaje += "<span><i class=\"fa fa-times\"></i> El Stock Mínimo solo debe contener números enteros</span><br>";
+				} else if (!regexEntero.test($("#nCantidad").val().trim())) { 
+					mensaje += "<span><i class=\"fa fa-times\"></i> La cantidad solo debe contener números enteros</span><br>";
 					eError++;
 				}
 
-				if (precioVal != '' && !regexDecimal.test(precioVal)) { 
-					mensaje += "<span><i class=\"fa fa-times\"></i> El Precio debe ser un número válido (ej. 5.50 o 120.75)</span><br>";
-					eError++;
-				}
 
 				if (eError>0){
 					mensaje += "</div>";
@@ -277,22 +270,22 @@
 					$(oObjeto).prop('disabled', true);
 					$('#divRespuestaGuardar').html("<div class=\"alert alert-info\"><img src=\"<?= base_url();?>/assets/images/loader.gif\" width=\"30px\"> <strong> Procesando informaci&oacute;n ...</strong></div>");
 					$('#divRespuestaGuardar').slideDown(300);
-					$.post('<?= site_url("Inventario/guardar"); ?>',{
-							tNombre: $("#tNombre").val().trim(),
-							tDescripcion: $("#tDescripcion").val().trim(),
-							eCodCategoriaProductos: $("#eCodCategoriaProductos").val(),
-							eCodProveedor: $("#eCodProveedor").val(),
-							eCodMarca: $("#eCodMarca").val(),
-							unidadesVal: unidadesVal,
-							precioVal: precioVal,
-							nStockMinimo: $("#nStockMinimo").val().trim()
+					$.post('<?= site_url("Inventario/guardarMovimiento"); ?>',{
+							eCodProducto: $("#eCodProducto").val().trim(),
+							tTipoMovimiento: $("#tTipoMovimiento").val().trim(),
+							nCantidad: $("#nCantidad").val().trim(),
+							eCodMotivo: $("#eCodMotivo").val().trim(),
+							tOrigenDestino: $("#tOrigenDestino").val().trim(),
+							eCodUsuario: $("#eCodUsuario").val().trim(),
+							tObservaciones: $("#tObservaciones").val().trim()
+							
 						}, 
 						function(data){
 							// respuesta
 							$('#divRespuestaGuardar').html(data); $('#divRespuestaGuardar').slideDown(300);
 							setTimeout(function() {
 								if ($('#eExito').val()==1){
-									window.location.href = "<?= site_url('Inventario/m8_s2'); ?>";
+									window.location.href = "<?= site_url('Inventario/m8_s1'); ?>";
 								}else{
 									$('#divRespuestaGuardar').slideUp(300);
 									$(oObjeto).prop('disabled', false);

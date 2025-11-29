@@ -101,6 +101,39 @@ class Catinserts_m extends CI_Model {
 
     }
 
+    public function ins_movimiento($aDatos){
+        $data = array(
+            'eCodProducto'         => $aDatos['eCodProducto'],
+            'tTipoMovimiento'           => $aDatos['tTipoMovimiento'],
+            'nCantidad'           => $aDatos['nCantidad'],
+            'eCodMotivo'     => $aDatos['eCodMotivo'],
+            'tOrigenDestino'     => $aDatos['tOrigenDestino'],
+            'eCodUsuario'          => $aDatos['eCodUsuario'],
+            'tObservaciones'          => $aDatos['tObservaciones'],
+            'fhFecha'     => $aDatos['fhFecha']
+        );
+
+        /*echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+        die();*/
+
+        $this->db->insert('pro_movimientosinventario', $data); 
+
+        $aRes['eExito']      = ($this->db->affected_rows() != 1) ? false : true;
+        $aRes['eCodMovimiento'] = $this->db->insert_id();
+
+        if ($aRes['eExito']) {
+            $aDataLog['eCodEvento']    = 1;
+            $aDataLog['tEvento']       = 'Movimiento: '.$aDatos['tTipoMovimiento']. ' fue registrado con éxito';
+            
+            $this->catinserts_m->ins_log_catalogos($aDataLog);
+        }
+
+        return $aRes;
+
+    }
+
     public function upd_usuario($aDatos){
         //campos de la tabla
         $data = array(

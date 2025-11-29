@@ -30,7 +30,7 @@ class Interesado extends CI_Controller {
 
 		$this->load->view('Encabezado/header', $data);
 		$this->load->view('Encabezado/menu');
-		$this->load->view('adopciones/adopciones_nuevo', $data);
+		$this->load->view('Interesados/interesados_nuevo', $data);
 	}
 
     public function m5_s2() { // Listado de Intetresados
@@ -42,7 +42,7 @@ class Interesado extends CI_Controller {
 
 		$this->load->view('Encabezado/header', $data);
 		$this->load->view('Encabezado/menu');   
-		$this->load->view('adopciones/adopciones', $data);
+		$this->load->view('Interesados/interesados', $data);
 
 	}
 

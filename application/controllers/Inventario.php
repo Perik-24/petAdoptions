@@ -22,23 +22,25 @@ class Inventario extends CI_Controller {
 		}
 	}
 
-	public function m8_s1() { // Mascota Nuevo
+	public function m8_s1() { // Movimientos
 
 		$data['con_seccion']		= $this->secciones_m->con_secciones(false, false, "m8_s1");
 		$data['con_menu']				= $this->secciones_m->con_menu($this->session->userdata("eCodPerfil"));
 		$data['con_permisos']		= $this->secciones_m->con_perfilpermiso($this->session->userdata("eCodPerfil"), "m8_s1");
+		$data['con_movimientos']		= $this->catalogos_m->con_movimientos();
 
 		$this->load->view('Encabezado/header', $data);
 		$this->load->view('Encabezado/menu');
-		$this->load->view('Inventario/inventario_producto', $data);
+		$this->load->view('Inventario/inventario_movimiento', $data);
 	}
 
-    public function m8_s2() { // Listado de Mascotas
+    public function m8_s2() { // Listado de Productos 
 
 		$data['con_seccion']		= $this->secciones_m->con_secciones(false, false, "m8_s2");
 		$data['con_menu']				= $this->secciones_m->con_menu($this->session->userdata("eCodPerfil"));
 		$data['con_permisos']		= $this->secciones_m->con_perfilpermiso($this->session->userdata("eCodPerfil"), "m8_s2");
 		$data['con_productos']		= $this->catalogos_m->con_productos();
+		$data['con_categoriasproductos']			= $this->catalogos_m->con_categoriasproductos();
 
 
 		$this->load->view('Encabezado/header', $data);
@@ -47,7 +49,7 @@ class Inventario extends CI_Controller {
 
 	}
 
-	public function nuevo() {
+	public function nuevo() { // Nuevo Producto
 		//echo "Nuevo Producto";
 		//if (!$eCodUsuario){
 		//	redirect(site_url("Inventario/m8_s2"));
@@ -65,6 +67,23 @@ class Inventario extends CI_Controller {
 			$this->load->view('Inventario/inventario_nuevo', $data);
 		//}
 
+	}
+
+	public function actualizar() { // Nuevo Movimiento de Inventario
+
+		$data['con_seccion']		= $this->secciones_m->con_secciones(false, false, "m8_s4");
+		$data['con_menu']				= $this->secciones_m->con_menu($this->session->userdata("eCodPerfil"));
+		$data['con_permisos']		= $this->secciones_m->con_perfilpermiso($this->session->userdata("eCodPerfil"), "m8_s4");
+		$data['con_marcas']		= $this->catalogos_m->con_marcas("AC");
+		$data['con_proveedores']		= $this->catalogos_m->con_proveedores("AC");
+		$data['con_productos']		= $this->catalogos_m->con_productos();
+		$data['con_usuarios']		= $this->catalogos_m->con_usuarios();
+		$data['con_motivos_movimiento']		= $this->catalogos_m->con_motivos_movimiento("AC");
+		
+			$this->load->view('Encabezado/header', $data);
+			$this->load->view('Encabezado/menu');
+			$this->load->view('Inventario/inventario_movimiento_nuevo', $data);
+		
 	}
 
 	public function guardar() {
@@ -98,6 +117,38 @@ class Inventario extends CI_Controller {
 		echo "<input type=\"hidden\" id=\"eCodUsuario\" name=\"eCodProducto\" value=\"".$aRes['eCodProducto']."\">";
 		echo "<input type=\"hidden\" id=\"eExito\" name=\"eExito\" value=\"".$aRes['eExito']."\">";
 		echo "<div class=\"alert alert-success\"><strong><i class=\"fa fa-check\"></i> Registro de Producto existoso,</strong> redireccionando al listado de productos</div>";
+
+	}
+
+	public function guardarMovimiento() {
+
+		/*echo "<pre>";
+    print_r($this->input->post());
+    echo "</pre>";
+    die();*/
+
+		$aDatos['eCodProducto']        = ($this->input->post("eCodProducto")      ? $this->input->post("eCodProducto")      : NULL);
+		$aDatos['tTipoMovimiento']   = ($this->input->post("tTipoMovimiento") ? $this->input->post("tTipoMovimiento") : NULL);
+		$aDatos['nCantidad']    = ($this->input->post("nCantidad")  ? $this->input->post("nCantidad")  : NULL);
+		$aDatos['eCodMotivo']       = ($this->input->post("eCodMotivo")     ? $this->input->post("eCodMotivo")     : NULL);
+		$aDatos['tOrigenDestino']       = ($this->input->post("tOrigenDestino")     ? $this->input->post("tOrigenDestino")     : NULL);
+		$aDatos['eCodUsuario']          = ($this->input->post("eCodUsuario")      ? $this->input->post("eCodUsuario")      : NULL);
+		$aDatos['tObservaciones']          = ($this->input->post("tObservaciones")      ? $this->input->post("tObservaciones")      : NULL);
+		$aDatos['fhFecha']			= date('Y/m/d H:i:s');
+
+		// Log the data being sent to the model for easier debugging
+		//log_message('debug', 'Inventario::guardar - aDatos: '.print_r($aDatos, true));
+
+		/*echo "<pre>";
+    print_r($aDatos);
+    echo "</pre>";
+    die();*/
+
+		$aRes = $this->catinserts_m->ins_movimiento($aDatos);
+
+		echo "<input type=\"hidden\" id=\"eCodUsuario\" name=\"eCodMovimiento\" value=\"".$aRes['eCodMovimiento']."\">";
+		echo "<input type=\"hidden\" id=\"eExito\" name=\"eExito\" value=\"".$aRes['eExito']."\">";
+		echo "<div class=\"alert alert-success\"><strong><i class=\"fa fa-check\"></i> Registro de Movimiento existoso,</strong> redireccionando al listado de Movimientos</div>";
 
 	}
 

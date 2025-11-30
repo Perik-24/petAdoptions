@@ -3,19 +3,19 @@
 						<h2>Inicio</h2>
 						<h2><div class="search-filter-wrapper" style="display: inline-block; margin-left: 20px;">
 							<input type="text" 
-                       name="q" 
-                       id="searchInput" 
-                       placeholder="Buscar..." 
-                       class="form-control" 
-                       style="min-width: 250px;">
+                       				name="q" 
+                       				id="searchInput" 
+                       				placeholder="Buscar..." 
+                       				class="form-control" 
+                       				style="min-width: 250px;">
                 <span class="input-group-btn">
 						</div>
 						<div class="search-filter-species" style="display: inline-block; margin-left: 20px;">
 						<select name="speciesFilter" id="speciesFilter" class="form-control">
 							<option value="">- Todas las Especies -</option>
-							<? foreach ($con_especies as $ce) { ?>
-								<option value="<?= $ce->eCodEspecie;?>"><?= $ce->tNombre;?></option>
-							<? } ?>
+							<?php foreach ($con_especies as $ce) { ?>
+								<option value="<?= $ce->eCodEspecie; ?>"><?= htmlspecialchars($ce->tNombre); ?></option>
+							<?php } ?>
 						</select>
 						</div>
 						</h2>
@@ -41,7 +41,7 @@
 						No se encontraron mascotas que coincidan con la búsqueda
 					</div>
 					<!-- Ejemplo de tarjeta comentado para referencia-->
-					<div class="card-animals">
+					<!--<div class="card-animals">
 						<div class="card-image">
 							<img src="http://money.com/wp-content/uploads/2024/03/Best-Small-Dog-Breeds-Pomeranian.jpg?quality=60"
 								alt="Imagen de mascota">
@@ -66,17 +66,20 @@
 							</div>
 							<button onclick="">Mas Info</button>
 						</div>
-					</div>
+					</div> -->
 
-		<? 	if (isset($con_mascotas)){  ?>
-		<? 	foreach ($con_mascotas as $cm) { ?>
-			<div class="card-animals">
+		<?php if (isset($con_mascotas) && is_array($con_mascotas)) { ?>
+        <?php foreach ($con_mascotas as $cm) {
+			$especieId = isset($cm->eCodEspecie) ? (int)$cm->eCodEspecie : 0;
+            $especieNombre = isset($cm->tEspecie) ? $cm->tEspecie : '';
+			?>
+			<div class="card-animals" data-especie-id="<?= $especieId; ?>">
 				<div class="card-image">
-					<? if ($cm->tFoto) { ?>
-					<img src="<?= base_url($cm->tFoto);?>" alt="<?= $cm->tMascota;?>">
-					<? } else { ?>
+					<?php if ($cm->tFoto) { ?>
+					<img src="<?= base_url($cm->tFoto);?>" alt="<?= htmlspecialchars($cm->tMascota); ?>">
+					<?php } else { ?>
 					<img src="<?= base_url('assets/images/placeholder.png');?>" alt="Sin imagen">
-					<? } ?>
+					<?php } ?>
 				</div>
 				<div class="card-content">
 					<h1><?= $cm->tMascota; ?></h1>
@@ -94,12 +97,13 @@
 							<span class="label">PESO</span>
 							<span class="value"><?= $cm->dPeso ? number_format($cm->dPeso, 2).' kg' : 'No especificado'; ?></span>
 						</div>
+						<span class="species-name" style="display:none;"><?= htmlspecialchars($especieNombre); ?></span>
 					</div>
-					<button onclick="verDetalle(<?= $cm->eCodMascota; ?>)">Mas Info</button>
+					<button onclick="verDetalle(<?= (int)$cm->eCodMascota; ?>)">Mas Info</button>
 				</div>
 			</div>
-		<? 		}	?>
-		<?	}		?>
+		<?php 		}	?>
+		<?php	}		?>
 		<!-- Contenedor modal para cargar el detalle vía AJAX -->
 				<div id="ajax-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 					<div class="modal-dialog modal-lg" role="document">
@@ -208,35 +212,44 @@
 					}
 
 					$(document).ready(function() {
-						$("#searchInput").on("keyup", function() {
-							var value = $(this).val().toLowerCase();
-							var visibleCards = 0;
-							
-							$(".card-animals").each(function() {
-								var petName = $(this).find("h1").text().toLowerCase();
-								var matches = petName.indexOf(value) > -1;
-								$(this).toggle(matches);
-								if (matches) visibleCards++;
-							});
-							
-							// Show/hide no results message
-							$("#noResults").toggle(visibleCards === 0);
-						});
-						$("#speciesFilter").on("change", function() {
-							var selectedSpecies = $(this).val().toLowerCase();
-							var visibleCards = 0;
+						function filterCards() {
+            var query = $('#searchInput').val().toLowerCase().trim();
+            var speciesFilter = $('#speciesFilter').val(); // ID (string) o ''
+            var visibleCards = 0;
 
-							$(".card-animals").each(function() {
-								var petSpecies = $(this).data("species").toLowerCase();
-								var matches = selectedSpecies === "" || petSpecies === selectedSpecies;
-								$(this).toggle(matches);
-								if (matches) visibleCards++;
-							});
+            // DEBUG: ver cuántas tarjetas hay y cuál es el filtro seleccionado
+            // console.log('Total cards:', $('.card-animals').length, 'speciesFilter:', speciesFilter, 'query:', query);
 
-							// Show/hide no results message
-							$("#noResults").toggle(visibleCards === 0);
-						});
-					});
+            $('.card-animals').each(function () {
+                var $card = $(this);
+
+                var nombre = ($card.find('h1').text() || '').toLowerCase();
+                var descripcion = ($card.find('.Description').text() || '').toLowerCase();
+                var textToSearch = (nombre + ' ' + descripcion).trim();
+
+                var matchesName = !query || textToSearch.indexOf(query) > -1;
+
+                var petSpeciesId = String($card.attr('data-especie-id') || '0');
+
+                // DEBUG por tarjeta (comentarlo si no quieres ver mucho)
+                // console.log('card:', nombre, 'data-especie-id=', petSpeciesId, 'matchesName=', matchesName);
+
+                var matchesSpecies = !speciesFilter || petSpeciesId === speciesFilter;
+
+                var shouldShow = matchesName && matchesSpecies;
+                $card.toggle(shouldShow);
+
+                if (shouldShow) visibleCards++;
+            });
+
+            $('#noResults').toggle(visibleCards === 0);
+        }
+
+        $('#searchInput').on('keyup', filterCards);
+        $('#speciesFilter').on('change', filterCards);
+
+        filterCards(); // Initial filter on page load
+    });
 				</script>
 				</body>
 				</html>

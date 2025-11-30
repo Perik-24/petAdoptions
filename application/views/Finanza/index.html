@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        /* FUENTES: Asegúrate de incluir las fuentes Lato y Montserrat si no lo has hecho */
+/* @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap"); */
+
+:root {
+    --color-brand-blue: #007bff; /* Azul del botón */
+    --color-brand-purple: #6a1b9a; /* Morado de acento */
+    --color-text-dark: #333333;
+    --color-border-light: #dddddd;
+    --color-background-soft: #f9f9f9;
+}
+
+/* === CONTENEDOR PRINCIPAL === */
+
+.donor-registration-section {
+    max-width: 900px; /* Ancho máximo para el formulario */
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.donor-header h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-brand-purple);
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.donor-header p {
+    color: #666;
+    font-size: 1.1em;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* === DISEÑO DE TARJETA (CARD) === */
+
+.form-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.form-card h2 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-brand-purple);
+    font-size: 1.8em;
+    border-bottom: 2px solid var(--color-background-soft);
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* === CAMPOS DE FORMULARIO (INPUTS) === */
+
+/* Para dividir filas en 2 columnas */
+.form-row {
+    display: flex;
+    gap: 20px; /* Espacio entre columnas */
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1; /* Ocupa el espacio disponible */
+    position: relative; /* Clave para el label flotante */
+    margin-bottom: 25px;
+}
+
+/* Inputs y Selects */
+.form-group input:not([type="radio"]), 
+.form-group select, 
+.form-group textarea {
+    width: 100%;
+    padding: 15px 12px 5px 12px; /* Espacio para el label flotante */
+    border: 1px solid var(--color-border-light);
+    border-radius: 6px;
+    font-size: 1em;
+    color: var(--color-text-dark);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group textarea {
+    padding-top: 12px; /* Más padding para el texto */
+    resize: vertical;
+}
+
+/* Foco en el Input */
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    border-color: var(--color-brand-blue);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1); /* Sombra de foco azul */
+    outline: none;
+}
+
+/* === ETIQUETAS FLOTANTES === */
+
+/* Etiqueta base */
+.form-group label:not(.label-heading):not(.select-label) {
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    font-size: 1em;
+    color: #999;
+    pointer-events: none; /* Ignora clics */
+    transition: 0.2s ease-out;
+    background: white;
+    padding: 0 5px;
+}
+
+/* Movimiento de la etiqueta al escribir o al hacer foco */
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label,
+.form-group textarea:focus + label,
+.form-group textarea:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 8px;
+    font-size: 0.75em;
+    color: var(--color-brand-purple);
+}
+
+/* Clave para input flotante: hacer el placeholder transparente */
+.form-group input, .form-group textarea {
+    /* Required para que :not(:placeholder-shown) funcione en algunos navegadores */
+    /* Lo ideal es usar un pequeño espacio o simplemente dejarlo vacío en el HTML */
+    &::placeholder {
+        color: transparent; 
+    }
+}
+
+/* === SELECTS Y RADIOS === */
+
+/* Etiqueta para Select (porque el padding es distinto) */
+.form-group .select-label {
+    top: 5px; /* Ajusta la posición inicial */
+}
+
+/* Contenedor de Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 25px;
+    margin-top: 10px;
+}
+
+.radio-group label {
+    font-weight: 500;
+    color: var(--color-text-dark);
+}
+
+.label-heading {
+    font-weight: 700;
+    color: var(--color-brand-purple);
+    font-size: 0.9em;
+}
+
+
+/* === BOTÓN DE ENVÍO === */
+
+.submit-btn {
+    width: 100%;
+    padding: 18px 0;
+    margin-top: 15px;
+    background-color: var(--color-brand-blue);
+    color: white;
+    font-size: 1.2em;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.submit-btn:hover {
+    background-color: #0056b3; /* Azul más oscuro */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+}
+
+/* === RESPONSIVE BÁSICO === */
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .donor-header h1 {
+        font-size: 2em;
+    }
+}
+    </style>
+    <section class="donor-registration-section">
+    <div class="donor-header">
+        <h1>Únete a la Causa. Sé un Héroe para Ellos.</h1>
+        <p>Cada donación, grande o pequeña, es un paso vital para encontrar un hogar seguro y amoroso.</p>
+    </div>
+
+    <form id="donorForm" action="ruta/del/controlador/guardar" method="POST">
+        
+        <div class="form-card">
+            <h2>Datos Personales</h2>
+            
+            <div class="form-group">
+                <input type="text" id="tNombre" name="tNombre" required>
+                <label for="tNombre">Nombre(s)</label>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="text" id="tApellidoPaterno" name="tApellidoPaterno">
+                    <label for="tApellidoPaterno">Apellido Paterno</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="tApellidoMaterno" name="tApellidoMaterno">
+                    <label for="tApellidoMaterno">Apellido Materno</label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="email" id="tCorreo" name="tCorreo" required>
+                    <label for="tCorreo">Correo Electrónico *</label>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="tTelefono" name="tTelefono">
+                    <label for="tTelefono">Teléfono</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-card">
+            <h2>Ubicación y Perfil</h2>
+
+            <div class="form-group">
+                <label class="label-heading">Tipo de Donador:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="tTipoDonador" value="Persona" checked> Persona Física</label>
+                    <label><input type="radio" name="tTipoDonador" value="Empresa"> Empresa (Moral)</label>
+                    <label><input type="radio" name="tTipoDonador" value="Anonimo"> Anónimo</label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <select id="eCodEstado" name="eCodEstado" required>
+                        <option value="">-- Selecciona un Estado --</option>
+                        <?php // Aquí va el loop PHP para cat_estados ?>
+                    </select>
+                    <label for="eCodEstado" class="select-label">Estado *</label>
+                </div>
+                <div class="form-group">
+                    <select id="eCodCiudad" name="eCodCiudad" required>
+                        <option value="">-- Selecciona una Ciudad --</option>
+                    </select>
+                    <label for="eCodCiudad" class="select-label">Ciudad / Municipio *</label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group large">
+                    <input type="text" id="tDireccion" name="tDireccion">
+                    <label for="tDireccion">Dirección Completa</label>
+                </div>
+                <div class="form-group small">
+                    <input type="text" id="tCodigoPostal" name="tCodigoPostal">
+                    <label for="tCodigoPostal">C.P.</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tNotas">Notas y Comentarios (Opcional)</label>
+                <textarea id="tNotas" name="tNotas" rows="4"></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Registrarme como Donador</button>
+    </form>
+</section>
+</body>
+</html>

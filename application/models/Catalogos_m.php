@@ -262,5 +262,41 @@ class Catalogos_m extends CI_Model {
                 return $query->result();
             }
         }
+
+    public function con_ciudades() {
+        $tQuery =   " SELECT * ".
+                    " FROM cat_ciudades";
+
+            $query = $this->db->query( $tQuery);
+            if ($query->num_rows()>0) {
+                return $query->result();
+            }
+        }
+
+    public function con_estados() {
+        $tQuery =   " SELECT * ".
+                    " FROM cat_estados";
+
+            $query = $this->db->query( $tQuery);
+            if ($query->num_rows()>0) {
+                return $query->result();
+            }
+        }
+
+    public function con_donadores ($eCodDonador = false){
+        $tQuery =   " SELECT * ".
+                    " FROM vdonadores".
+        ($eCodDonador != false ? " WHERE eCodDonador = ".$eCodDonador  : "");
+        $tQuery .=  " ORDER BY eCodDonador ASC ";
+
+        /*echo "<pre>";
+        echo "La query: ".$tQuery;
+        echo "</pre>";*/
+
+        $query = $this->db->query($tQuery);
+        if ($query->num_rows() > 0 ) {
+            return $query->result();
+        }
+    }
 }
 ?>

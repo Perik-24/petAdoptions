@@ -1,4 +1,21 @@
-
+	<style>
+		.modal-block {
+			background: #fff;
+			padding: 20px;
+			max-width: 400px;
+			margin: 40px auto;
+			position: relative;
+			border-radius: 3px;
+			box-shadow: 0 0 10px rgba(0,0,0,.4);
+		}
+		table {
+			table-layout: fixed;
+			word-wrap: break-word;
+			overflow-wrap: break-word;
+			hyphens: auto;
+		}
+		
+	</style>
     <section role="main" class="content-body">
     <? 	foreach ($con_seccion as $sec) { ?>
     							<header class="page-header">
@@ -43,7 +60,7 @@
 											<button type="button" class="btn btn-default btn-primary" onclick="filtro();" style="margin-right: 10px;">
 											<i class="fa fa-search"></i> Filtrar</button>
 											<button type="button" class="btn btn-default btn-primary" onclick="nuevo();">
-											<i class="fa fa-plus"></i> Registrar Movimiento</button>
+											<i class="fa fa-plus"></i> Nuevo Donacion</button>
 									<?	}	?>
 									</div>
 								</div>
@@ -60,37 +77,36 @@
 	
 										<th>Codigo</th>
 										<th>Nombre</th>
-										<th>Cantidad</th>
-										<th>Tipo de Movimiento</th>
-										<th>Motivo</th>
-										<th>Origen de Motivo</th>
-										<th>Usuario</th>
-										<th>Observaciones</th>
+										<th>Apellidos</th>
+										<th>Correo</th>
+										<th>Telefono</th>
+										<th>TipoDonador</th>
+										<th>Direccion</th>
+										<th>Estado</th>
+										<th>Ciudad</th>
+										<th>Codigo Postal</th>
 										<th>Fecha</th>
 									</tr>
 								</thead>
 								<tbody>
 									<? 	
-										if (isset($con_movimientos)) { 
+										if (isset($con_donadores)) { 
 									?>
-									<? 		foreach ($con_movimientos as $cm) { ?>
+									<? 		foreach ($con_donadores as $cm) { ?>
 												<tr>
-													<td><?= str_pad($cm->eCodMovimiento, 6, "0", STR_PAD_LEFT);?></td>
-													<td><?= $cm->tProductos;?></td>
-													<td><?= $cm->tMovimientos;?></td> 
-													<td><?= $cm->nCantidad;?></td> 
-													<td><?= $cm->tMotivos;?></td>
-													<td><?= $cm->tOrigenDestino;?></td>
-													<td><?= $cm->tUsuarios;?></td>
-													<td><?= $cm->tObservaciones;?></td>
-													<td><?= $cm->fhFecha;?></td>
-													<td><?= $cm->tCodEstatus;?></td>
-														<div id="<?= $cm->eCodMovimiento;?>" class="btn-group">
-															<? 	foreach ($con_permisos as $cp) { ?>
-															<? 		if (strrpos($cp->aEstatus, $cm->tCodEstatus)!==false) { ?>
-																		<?= $cp->tBoton;?>
-															<?		} 	?>
-															<?	} ?>
+													<td><?= str_pad($cm->eCodDonador, 6, "0", STR_PAD_LEFT);?></td>
+													<td><?= $cm->tNombre;?></td>
+													<td><?= $cm->tApellido;?></td> 
+													<td><?= $cm->tCorreo;?></td> 
+													<td><?= $cm->tTelefono;?></td>
+													<td><?= $cm->tTipoDonador;?></td>
+													<td><?= $cm->tDireccion;?></td>
+													<td><?= $cm->tEstados;?></td>
+													<td><?= $cm->tCiudades;?></td>
+													<td><?= $cm->tCodigoPostal;?></td>
+													<td><?= $cm->fhRegistro;?></td>
+														<div id="<?= $cm->eCodDonador;?>" class="btn-group">
+															
 														</div>	
 													</td>
 												</tr>
@@ -190,7 +206,7 @@
 			}
 
 			function nuevo(oObjeto){
-				window.location.href = "<?= site_url('Inventario/actualizar')?>/";
+				window.location.href = "<?= site_url('Finanza/nuevo')?>/";
 			}
 
 			function filtro(){

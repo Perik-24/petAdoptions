@@ -134,6 +134,42 @@ class Catinserts_m extends CI_Model {
 
     }
 
+    public function ins_donacion($aDatos){
+        $data = array(
+            'tNombre'         => $aDatos['tNombre'],
+            'tApellido'           => $aDatos['tApellido'],
+            'tCorreo'           => $aDatos['tCorreo'],
+            'tTelefono'     => $aDatos['tTelefono'],
+            'tTipoDonador'     => $aDatos['tTipoDonador'],
+            'tDireccion'          => $aDatos['tDireccion'],
+            'eCodCiudad'          => $aDatos['eCodCiudad'],
+            'eCodEstado'          => $aDatos['eCodEstado'],
+            'tCodigoPostal'          => $aDatos['tCodigoPostal'],
+            'tNotas'          => $aDatos['tNotas'],
+            'fhRegistro'     => $aDatos['fhRegistro']
+        );
+
+        /*echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+        die();*/
+
+        $this->db->insert('cat_donadores', $data); 
+
+        $aRes['eExito']      = ($this->db->affected_rows() != 1) ? false : true;
+        $aRes['eCodDonador'] = $this->db->insert_id();
+
+        if ($aRes['eExito']) {
+            $aDataLog['eCodEvento']    = 1;
+            $aDataLog['tEvento']       = 'Donador: '.$aDatos['tNombre']. ' fue registrado con éxito';
+            
+            $this->catinserts_m->ins_log_catalogos($aDataLog);
+        }
+
+        return $aRes;
+
+    }
+
     public function upd_usuario($aDatos){
         //campos de la tabla
         $data = array(
